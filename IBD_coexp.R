@@ -93,14 +93,6 @@ for(species in assemblies_mantel){   ### if we want to loop over all species, th
   Dgen<-dist(gendata) # get the genetic distances
   Dgeo<-earth.dist(sorted_coords[,c("lon", "lat")]) # get the geographic distances
   ibd<-mantel.randtest(Dgen,Dgeo) # run the mantel test
-
-  ## make a directory to put some plots into
-  ## make a directory to put the output plots into
-  ibd_out_dir<-paste0(main_dir, "/ibd_ibe_out")  # specify a full path to the directory
-  if(!dir.exists(ibd_out_dir)){ # check if the directory  exists and then only create it if it does not
-    dir.create(ibd_out_dir)
-  }
-  setwd(ibd_out_dir)
   
   ## pdf of plots
   pdf(file=paste0(species, "_Mantel_KD.pdf"), width=8, height=8)
