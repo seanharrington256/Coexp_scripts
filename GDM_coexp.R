@@ -88,9 +88,9 @@ for(species in assemblies_gdm){   ### if we want to loop over all species, this 
   gdm_dgen<-Dgen/max(Dgen) #normalize the genetic distances
   
   ## Read in environmental data (this was extracted from Bioclim variables in script "_IBD_IBE_2_plates.R")
-  all_alt<-read.csv("all_coords_altitude.csv", stringsAsFactors = FALSE, row.names=1)
-  all_cur_bioclim_only<-read.csv("all_coords_current_bioclim.csv", stringsAsFactors = FALSE, row.names=1)
-  all_cur_envirem<-read.csv("all_coords_current_envirem.csv", stringsAsFactors = FALSE, row.names=1)
+  all_alt<-read.csv("Coexp_coords_altitude.csv", stringsAsFactors = FALSE, row.names=1)
+  all_cur_bioclim_only<-read.csv("Coexp_coords_present_bioclim.csv", stringsAsFactors = FALSE, row.names=1)
+  all_cur_envirem<-read.csv("Coexp_coords_present_envirem.csv", stringsAsFactors = FALSE, row.names=1)
   all_cur_bioclim<-cbind(all_cur_bioclim_only, all_cur_envirem) ## note that despite the name, this also includes Envirems
   
   

@@ -25,6 +25,9 @@ setwd(main_dir)
 ### NOTE!!!! #### 
 ## HERE THE ASSEMBLY NAME SHOULD EXACTLY MATCH THE iPYRAD PREFIX FOR OUTPUT FILES!!!!
 ##     e.g., if the .ugeno file is Sdekayi_plates_123.ugeno, then species should be defined as Sdekayi_plates_123
+# This commented out portion is from before I looped this over everything - you can run
+# just the stuff inside the loop by uncommented a single one of these and then running stuff inside the loop below
+
 
 # species<-"Lcalligaster_p123"
 # species<-"Pguttatus_p123"
