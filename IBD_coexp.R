@@ -42,7 +42,7 @@ assemblies_mantel<-c(
   "erytro",
   "abacura_only",
   "Mflagellum_p123_v3_25missEast",
-  "milks_denovo-92"
+  "Milks_filtered_snps_taxa"
 )
 
 # There is one loop set up right now, just to loop IBD plot and mantel tests over assemblies of interest
@@ -64,8 +64,8 @@ for(species in assemblies_mantel){   ### if we want to loop over all species, th
   ###########################################################
   ## Set up paths to input files
   ###########################################################
-  path_ugeno<-paste0(main_dir,"/", species,".ugeno")
-  path_ustr<-paste0(main_dir,"/", species,".ustr")
+  # path_ugeno<-paste0(main_dir,"/", species,".ugeno")
+  # path_ustr<-paste0(main_dir,"/", species,".ustr")
   # path_usnps<-paste0(main_dir,"/", species,".usnps")
   path_vcf<-paste0(main_dir,"/", species,".vcf")
 
@@ -80,7 +80,15 @@ for(species in assemblies_mantel){   ### if we want to loop over all species, th
   ## Read in genetic data 
   gendata_all<-read.vcfR(path_vcf) # read in all of the genetic data
   gendata<-vcfR2genlight(gendata_all) # make the genetic data a biallelic matrix of alleles in genlight format
-  ind_names<-gendata@ind.names ## get the individual names in the order that they show up in the various files - this is important farther down for getting coordinates into the right order for plotting
+  if(species=="Milks_filtered_snps_taxa"){ # have to handle the milks slightly differenly because the names of the individuals in the genetic data have the species tacked onto the front
+    ind_names<-sapply(gendata@ind.names, function(x) strsplit(x, "_")[[1]][[3]])
+    gendata@ind.names <- ind_names
+  }else{
+    ind_names<-gendata@ind.names ## get the individual names in the order that they show up in the various files - this is important farther down for getting coordinates into the right order for plotting
+  }
+  
+  
+  
 
   ### For  down below, get the geographic coordinates sorted out
   ## make sure there aren't any individuals that don't have coordinates
@@ -89,10 +97,13 @@ for(species in assemblies_mantel){   ### if we want to loop over all species, th
   match_coords<-match(ind_names, coords[,"number"])
   sorted_coords<-coords[match_coords,]
   
+  
   ## Quick little Mantel test (not the best, but fast test)
   Dgen<-dist(gendata) # get the genetic distances
   Dgeo<-earth.dist(sorted_coords[,c("lon", "lat")]) # get the geographic distances
   ibd<-mantel.randtest(Dgen,Dgeo) # run the mantel test
+  
+  setwd(ibd_out_dir)
   
   ## pdf of plots
   pdf(file=paste0(species, "_Mantel_KD.pdf"), width=8, height=8)

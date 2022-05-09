@@ -28,15 +28,15 @@ if(!dir.exists(gdm_out_dir)){ # check if the directory  exists and then only cre
 ######################################################################################################################
 
 assemblies_gdm<-c(
-  "Acontortrix_p123_v2_25miss",
-  "Dpunctatus_p123_v3_25missEAST",
-  "Lgetula_p123_v4_25miss", # note that PTA & Stairway was made from Lgetula_p123_v2_25miss
-  "Pguttatus_p123_v2_25miss",
-  "Sdekayi_p123_v2_25miss",
-  "erytro",
-  "abacura_only",
-  "Mflagellum_p123_v3_25missEast",
-  "milks_denovo-92"
+  # "Acontortrix_p123_v2_25miss",
+  # "Dpunctatus_p123_v3_25missEAST",
+  # "Lgetula_p123_v4_25miss", # note that PTA & Stairway was made from Lgetula_p123_v2_25miss
+  # "Pguttatus_p123_v2_25miss",
+  # "Sdekayi_p123_v2_25miss",
+  # "erytro",
+  # "abacura_only",
+  # "Mflagellum_p123_v3_25missEast",
+  "Milks_filtered_snps_taxa"
 )
 
 
@@ -51,8 +51,8 @@ for(species in assemblies_gdm){   ### if we want to loop over all species, this 
   ## have left them in because they were alrady in the 
   ## _Pop_assignment.R script
   ###########################################################
-  path_ugeno<-paste0(main_dir,"/", species,".ugeno")
-  path_ustr<-paste0(main_dir,"/", species,".ustr")
+  # path_ugeno<-paste0(main_dir,"/", species,".ugeno")
+  # path_ustr<-paste0(main_dir,"/", species,".ustr")
   # path_usnps<-paste0(main_dir,"/", species,".usnps")
   path_vcf<-paste0(main_dir,"/", species,".vcf")
 
@@ -61,19 +61,35 @@ for(species in assemblies_gdm){   ### if we want to loop over all species, this 
   # ## read in the usnps file to get the number of individuals and snps for this assembly
   # nums_ind_snps<-as.numeric(unlist(strsplit(readLines(path_usnps)[[1]], split=" ")))
   
-  # read in the geno file to get the number of individuals and snps for this assembly
-  geno_txt<-readLines(path_ugeno)
-  nums_snps<-length(geno_txt)
-  num_ind<-length(strsplit(geno_txt[[1]], "")[[1]])
   
-
-
-  ## quirk of read.structure function is that it requires the strucure file to have the file extension “.stru” - do some copying to make a new file with this extension
-  path_stru<-gsub(".ustr", ".stru", path_ustr)  # Use a regular expression substitution to generate the new file name
-  file.copy(path_ustr, path_stru) # make a copy of the file with the new name - if this returns FALSE, just means that this has already been done: should be fine unless we did it incorrectly previously
-  # Now we can read in this file
-  gendata<-read.structure(path_stru, n.ind=num_ind, n.loc=nums_snps, onerowperind = FALSE, col.lab=1, col.pop=0, NA.char="-9", pop=NULL, ask=FALSE, quiet=FALSE)
-  ind_names<-rownames(gendata@tab) ## get the individual names in the order that they show up in the various files - this is important farther down for getting coordinates into the right order for plotting
+  
+  # swapping this bit out to use only vcf file instead
+  # # read in the geno file to get the number of individuals and snps for this assembly
+  # geno_txt<-readLines(path_ugeno)
+  # nums_snps<-length(geno_txt)
+  # num_ind<-length(strsplit(geno_txt[[1]], "")[[1]])
+  # 
+  # 
+  # 
+  # ## quirk of read.structure function is that it requires the strucure file to have the file extension “.stru” - do some copying to make a new file with this extension
+  # path_stru<-gsub(".ustr", ".stru", path_ustr)  # Use a regular expression substitution to generate the new file name
+  # file.copy(path_ustr, path_stru) # make a copy of the file with the new name - if this returns FALSE, just means that this has already been done: should be fine unless we did it incorrectly previously
+  # # Now we can read in this file
+  # gendata<-read.structure(path_stru, n.ind=num_ind, n.loc=nums_snps, onerowperind = FALSE, col.lab=1, col.pop=0, NA.char="-9", pop=NULL, ask=FALSE, quiet=FALSE)
+  # ind_names<-rownames(gendata@tab) ## get the individual names in the order that they show up in the various files - this is important farther down for getting coordinates into the right order for plotting
+  
+  
+  
+  ## Read in genetic data 
+  gendata_all<-read.vcfR(path_vcf) # read in all of the genetic data
+  gendata<-vcfR2genlight(gendata_all) # make the genetic data a biallelic matrix of alleles in genlight format
+  if(species=="Milks_filtered_snps_taxa"){ # have to handle the milks slightly differenly because the names of the individuals in the genetic data have the species tacked onto the front
+    ind_names<-sapply(gendata@ind.names, function(x) strsplit(x, "_")[[1]][[3]])
+    gendata@ind.names <- ind_names
+  }else{
+    ind_names<-gendata@ind.names ## get the individual names in the order that they show up in the various files - this is important farther down for getting coordinates into the right order for plotting
+  }
+  
   
   
   ### For  down below, get the geographic coordinates sorted out
@@ -84,7 +100,7 @@ for(species in assemblies_gdm){   ### if we want to loop over all species, this 
   sorted_coords<-coords[match_coords,]
   
   ## Calculate genetic distance among all individals
-  Dgen<-dist(gendata$tab, diag=TRUE, upper=TRUE)
+  Dgen<-dist(gendata, diag=TRUE, upper=TRUE)
   gdm_dgen<-Dgen/max(Dgen) #normalize the genetic distances
   
   ## Read in environmental data (this was extracted from Bioclim variables in script "_IBD_IBE_2_plates.R")

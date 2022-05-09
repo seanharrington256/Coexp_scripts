@@ -1,12 +1,21 @@
 #### Script to do population assignment on GBS data for manuscript
 ###     looking at coexpanding eastern snakes
 
+
+# Prior to running this, had to fix some names in the milk snake files
+# ran these on command line in dir with the milk snake files:
+# sed -i '.bak' 's/L_elapsoides_FTB2078/L_gentilis_FTB2078/g' *
+# sed -i '.bak' 's/L_gentilis_FTB2109/L_elapsoides_FTB2109/g' *
+# sed -i '.bak' 's/L_triangulum_FTB1538/L_triangulum_FTB1583/g' *
+# had to also change YPM13949 in the coords to YP13949 to match the genetic data files
+#    and YPM13969 to YP13969 for same reason
+
 ### load up relevant packages
 library(adegenet)
 library(LEA)
 library(plotrix)
 library(mapdata)
-library(tess3r)
+# library(tess3r)
 library(rworldmap)
 
 
@@ -108,7 +117,13 @@ for(species in all_assemblies){   ### if we want to loop over all assemblies, th
   # Now we can read in this file
   DAPC_ustr<-read.structure(path_stru, n.ind=num_ind, n.loc=nums_snps, onerowperind = FALSE, col.lab=1, col.pop=0, NA.char="-9", pop=NULL, ask=FALSE, quiet=FALSE)
   DAPC_ustr ## Take a quick look at how the data is structured for Adegenet
-  ind_names<-rownames(DAPC_ustr@tab) ## get the individual names in the order that they show up in the various files - this is important farther down for getting coordinates into the right order for plotting
+  if(species=="milks_denovo-92"){ # have to handle the milks slightly differenly because the names of the individuals in the genetic data have the species tacked onto the front
+    ind_names<-sapply(rownames(DAPC_ustr@tab), function(x) strsplit(x, "_")[[1]][[3]])
+  }else{
+    ind_names<-rownames(DAPC_ustr@tab) ## get the individual names in the order that they show up in the various files - this is important farther down for getting coordinates into the right order for plotting
+  }
+  
+  
 
   
   ####   this section will run DAPC interactively - I've commented it out to run everything with no user input  
