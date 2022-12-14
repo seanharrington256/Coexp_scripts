@@ -5,6 +5,7 @@
 library(adegenet)
 library(gdm)
 library(caret)
+library(vcfR)
 
 ## Set up an object to contain the path to the main directory with the data and then set that as the working directory
 main_dir<-"/Users/harrington/Active_Research/Ecotone_genomics/GBS_Data/pop_assignment"
@@ -46,39 +47,10 @@ assemblies_gdm<-c(
 
 for(species in assemblies_gdm){   ### if we want to loop over all species, this line and line starting "all_assemblies<-c" should be uncommented, as well as final "}"
   ###########################################################
-  ## Set up paths to input files for each assembly
-  ## these are not all required at present, but
-  ## have left them in because they were alrady in the 
-  ## _Pop_assignment.R script
+  ## Set up paths to input file for each assembly
   ###########################################################
-  # path_ugeno<-paste0(main_dir,"/", species,".ugeno")
-  # path_ustr<-paste0(main_dir,"/", species,".ustr")
-  # path_usnps<-paste0(main_dir,"/", species,".usnps")
   path_vcf<-paste0(main_dir,"/", species,".vcf")
 
-
-  ###########
-  # ## read in the usnps file to get the number of individuals and snps for this assembly
-  # nums_ind_snps<-as.numeric(unlist(strsplit(readLines(path_usnps)[[1]], split=" ")))
-  
-  
-  
-  # swapping this bit out to use only vcf file instead
-  # # read in the geno file to get the number of individuals and snps for this assembly
-  # geno_txt<-readLines(path_ugeno)
-  # nums_snps<-length(geno_txt)
-  # num_ind<-length(strsplit(geno_txt[[1]], "")[[1]])
-  # 
-  # 
-  # 
-  # ## quirk of read.structure function is that it requires the strucure file to have the file extension “.stru” - do some copying to make a new file with this extension
-  # path_stru<-gsub(".ustr", ".stru", path_ustr)  # Use a regular expression substitution to generate the new file name
-  # file.copy(path_ustr, path_stru) # make a copy of the file with the new name - if this returns FALSE, just means that this has already been done: should be fine unless we did it incorrectly previously
-  # # Now we can read in this file
-  # gendata<-read.structure(path_stru, n.ind=num_ind, n.loc=nums_snps, onerowperind = FALSE, col.lab=1, col.pop=0, NA.char="-9", pop=NULL, ask=FALSE, quiet=FALSE)
-  # ind_names<-rownames(gendata@tab) ## get the individual names in the order that they show up in the various files - this is important farther down for getting coordinates into the right order for plotting
-  
-  
   
   ## Read in genetic data 
   gendata_all<-read.vcfR(path_vcf) # read in all of the genetic data
@@ -89,7 +61,6 @@ for(species in assemblies_gdm){   ### if we want to loop over all species, this 
   }else{
     ind_names<-gendata@ind.names ## get the individual names in the order that they show up in the various files - this is important farther down for getting coordinates into the right order for plotting
   }
-  
   
   
   ### For  down below, get the geographic coordinates sorted out
@@ -103,7 +74,7 @@ for(species in assemblies_gdm){   ### if we want to loop over all species, this 
   Dgen<-dist(gendata, diag=TRUE, upper=TRUE)
   gdm_dgen<-Dgen/max(Dgen) #normalize the genetic distances
   
-  ## Read in environmental data (this was extracted from Bioclim variables in script "_IBD_IBE_2_plates.R")
+  ## Read in environmental data (this was extracted from Bioclim variables in script "IBD_coexp.R")
   all_alt<-read.csv("Coexp_coords_altitude.csv", stringsAsFactors = FALSE, row.names=1)
   all_cur_bioclim_only<-read.csv("Coexp_coords_present_bioclim.csv", stringsAsFactors = FALSE, row.names=1)
   all_cur_envirem<-read.csv("Coexp_coords_present_envirem.csv", stringsAsFactors = FALSE, row.names=1)
@@ -171,7 +142,7 @@ for(species in assemblies_gdm){   ### if we want to loop over all species, this 
   
 
   ## Get variable importance
-  modTest_b <- gdm.varImp(gdm_sitepair, fullModelOnly = F, geo=T, nPerm=100, parallel=F)
+  modTest_b <- gdm.varImp(gdm_sitepair, predSelect = FALSE, geo=T, nPerm=100, parallel=F)
   
   write.csv(modTest_b[[1]], paste0(species, "_GDM_p-value.csv"))
   write.csv(modTest_b[[2]], paste0(species, "_GDM_var_imp.csv"))
@@ -179,7 +150,7 @@ for(species in assemblies_gdm){   ### if we want to loop over all species, this 
 
   pdf(file=paste0(species, "_GDM_var_imp.pdf"), width=6, height=6)
   par(mar=c(10,4,4,4))
-  barplot(modTest_b[[2]][,1],main = paste0(species, "\nGDM full model var importance"), las=2)
+  barplot(modTest_b[[2]][,1], main = paste0(species, "\nGDM full model var importance"), las=2, names.arg = rownames(modTest_b[[2]]))
   dev.off()
 
   setwd(main_dir)
