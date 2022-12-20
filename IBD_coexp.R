@@ -1,55 +1,42 @@
-#### Script to look at isolation by distance for GBS data
+#### Script to look at isolation by distance for GBS data using kernel density plots
+####    this will also extract ecological data for use in GDM in another script - I don't know why I didn't put that part into the gdm script, but I didn't... would be good to do that in the future
 
 ### load up relevant packages
 library(adegenet)
 library(MASS)
-# library(vegan)
-# library(ape)
 library(fossil)
-# library(adespatial)
-# library(varhandle)
-# library(logisticPCA)
 library(raster)
-# library(caret)
-# library(LEA)
-# library(psych)
 library(vcfR)
 library(dartR)
 library(rSDM)
 
 
 ## Set up an object to contain the path to the main directory with the data and then set that as the working directory
-main_dir<-"/Users/harrington/Active_Research/Ecotone_genomics/GBS_Data/pop_assignment"
+main_dir<-"/Users/harrington/Active_Research/Ecotone_genomics/GBS_Data/Coexp_dryad"
 worldclim_dir<-"/Users/harrington/worldclim_data"
 bioclim_dir<-"/Users/harrington/worldclim_data/wc2.1_30s_bio"
 envirem_dir<-"/Users/harrington/environ_layers_non_worldclim/Envirem_NAmerica"
 setwd(main_dir)
 
-### Set this up so that major code blocks only need to be written once, with subsitutions based on specific species
+### This will do some up front setup, then loop over the various assemblies to analyze the data
 ######################################################################################################################
 ######################################################################################################################
 
 
 ## Loop over all of the assemblies that we want to analyze
       
-
-assemblies_mantel<-c(
+assemblies_ibd<-c(
   "Acontortrix_p123_v2_25miss",
   "Dpunctatus_p123_v3_25missEAST",
-  "Lgetula_p123_v4_25miss", # note that PTA & Stairway was made from Lgetula_p123_v2_25miss
+  "Lgetula_p123_v4_25miss", 
   "Pguttatus_p123_v2_25miss",
-  "Sdekayi_p123_v2_25miss",
+  "Sdekayi_p123_v4_25miss",
   "erytro",
   "abacura_only",
   "Mflagellum_p123_v3_25missEast",
   "Milks_filtered_snps_taxa"
 )
 
-# There is one loop set up right now, just to loop IBD plot and mantel tests over assemblies of interest
-  # once the rest gets hammered out, I'll either loop it all together or make them seaprate loops
-
-######################################################################################################################
-######################################################################################################################
 
 
 ## make a directory to put the output plots into
@@ -59,24 +46,20 @@ if(!dir.exists(ibd_out_dir)){ # check if the directory  exists and then only cre
 }
 
 
+## Read in all coordinates
+setwd(main_dir)
+coords<-read.csv("all_coords_requested.csv", header=TRUE, row.names=NULL) # coordinates of everything I sequenced and many I didn't
 
-for(species in assemblies_mantel){   ### if we want to loop over all species, this line and line starting "all_assemblies<-c" should be uncommented, as well as final "}"
+
+
+for(species in assemblies_ibd){   ### if we want to loop over all species, this line and line starting "all_assemblies<-c" should be uncommented, as well as final "}"
   ###########################################################
   ## Set up paths to input files
   ###########################################################
-  # path_ugeno<-paste0(main_dir,"/", species,".ugeno")
-  # path_ustr<-paste0(main_dir,"/", species,".ustr")
-  # path_usnps<-paste0(main_dir,"/", species,".usnps")
   path_vcf<-paste0(main_dir,"/", species,".vcf")
 
   
-  ## Read in coordinates
-  setwd(main_dir)
-  coords<-read.csv("all_coords_requested.csv", header=TRUE, row.names=NULL) # coordinates of everything I sequenced and many I didn't
-  ## read in the usnps file to get the number of individuals and snps for this assembly
-  # nums_ind_snps<-as.numeric(unlist(strsplit(readLines(path_usnps)[[1]], split=" ")))
-  
-  
+
   ## Read in genetic data 
   gendata_all<-read.vcfR(path_vcf) # read in all of the genetic data
   gendata<-vcfR2genlight(gendata_all) # make the genetic data a biallelic matrix of alleles in genlight format
@@ -98,19 +81,16 @@ for(species in assemblies_mantel){   ### if we want to loop over all species, th
   sorted_coords<-coords[match_coords,]
   
   
-  ## Quick little Mantel test (not the best, but fast test)
+  ## Get genetic and geogrpahic distances, get kernel density, and make a color palette
   Dgen<-dist(gendata) # get the genetic distances
   Dgeo<-earth.dist(sorted_coords[,c("lon", "lat")]) # get the geographic distances
-  ibd<-mantel.randtest(Dgen,Dgeo) # run the mantel test
+  dens <- kde2d(as.numeric(Dgeo),as.numeric(Dgen), n=300)  # had to add as.numeric around the distances to make them numeric vectors--this wasn't necessary previously
+  myPal <- colorRampPalette(c("white","blue","gold", "orange", "red"))
   
   setwd(ibd_out_dir)
   
-  ## pdf of plots
-  pdf(file=paste0(species, "_Mantel_KD.pdf"), width=8, height=8)
-  plot(ibd, main=paste0(species, "\nmantel p = ", ibd$pvalue)) # plot out the IBD significance
-  ## make kernel density plot of genetic and geographic distances
-  dens <- kde2d(as.numeric(Dgeo),as.numeric(Dgen), n=300)  # had to add as.numeric around the distances to make them numeric vectors--this wasn't necessary previously
-  myPal <- colorRampPalette(c("white","blue","gold", "orange", "red"))
+  ## pdf of plot
+  pdf(file=paste0(species, "_IBD_KD.pdf"), width=8, height=8)
   plot(Dgeo, Dgen, pch=20,cex=.5)
   image(dens, col=transp(myPal(300),.7), add=TRUE)
   abline(lm(as.numeric(Dgen)~as.numeric(Dgeo)))
@@ -196,6 +176,9 @@ write.csv(all_cur_envirem, file="Coexp_coords_present_envirem.csv")
   
 
 
+## Commented out code below here looks at correlations to decide what highly correlated 
+##    variables to remove in gdm analyses
+
 
 # # pdf(file="all_samples_all_bioclim_corrs.pdf", width=50, height=50)
 # # pairs.panels(all_cur_bioclim, scale=T) # For all bioclims across all points for all species, find correlations
@@ -228,12 +211,6 @@ write.csv(all_cur_envirem, file="Coexp_coords_present_envirem.csv")
 # #   # do this once and then use just the same set of environmental variables for all - allows more direct comparison
 # # dev.off()
 # ### Looks solid - nothing above 0.8
-
-
-
-
-
-
 
 
 

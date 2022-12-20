@@ -41,7 +41,7 @@ all_cur_bioclim<-cbind(all_cur_bioclim_only, all_cur_envirem) ## note that despi
 assemblies_gdm<-c(
   "Acontortrix_p123_v2_25miss",
   "Dpunctatus_p123_v3_25missEAST",
-  "Lgetula_p123_v4_25miss", # note that PTA & Stairway was made from Lgetula_p123_v2_25miss
+  "Lgetula_p123_v4_25miss",
   "Pguttatus_p123_v2_25miss",
   "Sdekayi_p123_v2_25miss",
   "erytro",
@@ -223,6 +223,10 @@ names(var_imp) <- gsub("Mflagellum_p123_v3_25missEast", "M. flagellum", names(va
 names(var_imp) <- gsub("Milks_filtered_snps_taxa", "L. triangulum", names(var_imp))
 names(var_imp) <- gsub("Pguttatus_p123_v2_25miss", "P. guttatus", names(var_imp))
 names(var_imp) <- gsub("Sdekayi_p123_v2_25miss", "S. dekayi", names(var_imp))
+
+
+
+
 # and for sig_vars
 names(sig_vars) <- gsub("abacura_only", "F. abacura", names(sig_vars))
 names(sig_vars) <- gsub("Acontortrix_p123_v2_25miss", "A. contortrix", names(sig_vars))
@@ -254,30 +258,75 @@ var_imp_df <- melt(var_imp, id = "X")
 var_imp_df <- var_imp_df[, !colnames(var_imp_df) %in% "variable"]
 colnames(var_imp_df) <- c("variable", "importance", "species")
 
+# I should've made this swap up higher somwehere, but I didn't, so here we are
+var_imp_df$variable <- gsub("PrecipSeas_B15", "Prec. seas B15", var_imp_df$variable)
+var_imp_df$variable <- gsub("AnnPrecip_B12", "Ann. prec. B12", var_imp_df$variable)
+var_imp_df$variable <- gsub("PrecWarmQ_B18", "Prec. warmest Q B18", var_imp_df$variable)
+var_imp_df$variable <- gsub("MTWetQ_B8", "M. T. wettest Q B8", var_imp_df$variable)
+var_imp_df$variable <- gsub("MTDryQ_B9", "M. T. driest Q B9", var_imp_df$variable)
+var_imp_df$variable <- gsub("topoWet", "Topo wetness", var_imp_df$variable)
+var_imp_df$variable <- gsub("TerrRough", "Terr roughness", var_imp_df$variable)
+var_imp_df$variable <- gsub("aridityIndexThorn", "Thorn's aridity", var_imp_df$variable)
+var_imp_df$variable <- gsub("MDiurnRange_B2", "M diurn. range B2", var_imp_df$variable)
+var_imp_df$variable <- gsub("TSeas_B4", "T. seas B4", var_imp_df$variable)
+var_imp_df$variable <- gsub("MaxTWarmMon_B5", "Max T warmest mon. B5", var_imp_df$variable)
+var_imp_df$variable <- gsub("AnnMeanT_B1", "Ann. mean T.
+                            B1", var_imp_df$variable)
+var_imp_df$variable <- gsub("PETseasonality", "PET seasonality", var_imp_df$variable)
+var_imp_df$variable <- gsub("alt", "Altitude", var_imp_df$variable)
+
+
 
 var_imp_sig_only_df <- melt(var_imp_sig_only, id = "X")
 var_imp_sig_only_df <- var_imp_sig_only_df[, !colnames(var_imp_sig_only_df) %in% "variable"]
 colnames(var_imp_sig_only_df) <- c("variable", "importance", "species")
 
+# I should've made this swap up higher somwehere, but I didn't, so here we are
+var_imp_sig_only_df$variable <- gsub("PrecipSeas_B15", "Prec. seas B15", var_imp_sig_only_df$variable)
+var_imp_sig_only_df$variable <- gsub("AnnPrecip_B12", "Ann. prec. B12", var_imp_sig_only_df$variable)
+var_imp_sig_only_df$variable <- gsub("PrecWarmQ_B18", "Prec. warmest Q B18", var_imp_sig_only_df$variable)
+var_imp_sig_only_df$variable <- gsub("MTWetQ_B8", "M. T. wettest Q B8", var_imp_sig_only_df$variable)
+var_imp_sig_only_df$variable <- gsub("MTDryQ_B9", "M. T. driest Q B9", var_imp_sig_only_df$variable)
+var_imp_sig_only_df$variable <- gsub("topoWet", "Topo wetness", var_imp_sig_only_df$variable)
+var_imp_sig_only_df$variable <- gsub("TerrRough", "Terr roughness", var_imp_sig_only_df$variable)
+var_imp_sig_only_df$variable <- gsub("aridityIndexThorn", "Thorn's aridity", var_imp_sig_only_df$variable)
+var_imp_sig_only_df$variable <- gsub("MDiurnRange_B2", "M diurn. range B2", var_imp_sig_only_df$variable)
+var_imp_sig_only_df$variable <- gsub("TSeas_B4", "T. seas B4", var_imp_sig_only_df$variable)
+var_imp_sig_only_df$variable <- gsub("MaxTWarmMon_B5", "Max T warmest mon. B5", var_imp_sig_only_df$variable)
+var_imp_sig_only_df$variable <- gsub("AnnMeanT_B1", "Ann. mean T. B1", var_imp_sig_only_df$variable)
+var_imp_sig_only_df$variable <- gsub("PETseasonality", "PET seasonality", var_imp_sig_only_df$variable)
+var_imp_sig_only_df$variable <- gsub("alt", "Altitude", var_imp_sig_only_df$variable)
+
+
+
 
 # make heatmap with ggplot
-ggplot(var_imp_df, aes(species, variable, fill= importance, na.rm = TRUE)) + 
+map_all_vars <- ggplot(var_imp_df, aes(species, variable, fill= importance, na.rm = TRUE)) + 
   geom_tile(na.rm = TRUE) +
   scale_fill_gradient2(mid = "white",  high = "red", na.value = NA) + 
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1), 
         axis.title.x = element_blank(), axis.title.y = element_blank())
 
 # make heatmap with ggplot for significant only
-ggplot(var_imp_sig_only_df, aes(species, variable, fill= importance, na.rm = TRUE)) + 
+maps_sigVars <- ggplot(var_imp_sig_only_df, aes(species, variable, fill= importance, na.rm = TRUE)) + 
   geom_tile(na.rm = TRUE) +
   scale_fill_gradient2(mid = "white",  high = "red", na.value = NA) + 
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1), 
         axis.title.x = element_blank(), axis.title.y = element_blank())
 
+map_all_vars
+maps_sigVars
 
 
+setwd(gdm_out_dir)
 
+pdf(file="heatmap_all_gdm_vars.pdf", width = 6, height = 4)
+print(map_all_vars)
+dev.off()
 
+pdf(file="heatmap_sig_gdm_vars.pdf", width = 6, height = 4)
+print(maps_sigVars)
+dev.off()
 
 
 
