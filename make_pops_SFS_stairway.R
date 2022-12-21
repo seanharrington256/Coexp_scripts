@@ -23,6 +23,7 @@ library(rworldmap)
 # set up directories
 main_dir<-"/Users/harrington/Active_Research/Ecotone_genomics/GBS_Data/Coexp_dryad"
 stairway2popsdir<-"/Users/harrington/Active_Research/Ecotone_genomics/GBS_Data/Coexp_dryad/stairwayplot2/pop_files"
+
 vcf_filtered_dir<-"/Users/harrington/Active_Research/Ecotone_genomics/GBS_Data/Coexp_dryad/stairwayplot2/filtered_vcf"
 
 setwd(main_dir)
@@ -50,10 +51,10 @@ coords<-read.csv("all_coords_requested.csv", header=TRUE, row.names=NULL) # coor
 
 
 for(species in all_assemblies){
-  if(species %in% c("Acontortrix_p123_v2_25miss", "Sdekayi_p123_v4_25miss", "erytro", "Mflagellum_p123_v3_25missEast")){
+  if(species %in% c("Sdekayi_p123_v4_25miss", "erytro", "Mflagellum_p123_v3_25missEast")){
     k <- 1
   }
-  if(species %in% c("Dpunctatus_p123_v3_25missEAST", "Pguttatus_p123_v2_25miss", "abacura_only")){
+  if(species %in% c("Acontortrix_p123_v2_25miss", "Pguttatus_p123_v2_25miss", "abacura_only")){
     k <- 2
   }
   if(species %in% c("Lgetula_p123_v4_25miss", "Dpunctatus_p123_v3_25missEAST")){
@@ -112,11 +113,11 @@ for(species in all_assemblies){
     points(x=snmf_coords[,"lon"], y=snmf_coords[,"lat"], pch=21, bg=col_plot[,"cluster"])
   
     
-    # if(species=="Dpunctatus_p123_v3_25missEAST"){
-    #   ## set up the populatoins based on how it was colored:
-    #   fsc_pops[which(fsc_pops[,2]==1),2]<-"south"
-    #   fsc_pops[which(fsc_pops[,2]==2),2]<-"north"
-    # }
+    if(species=="Acontortrix_p123_v2_25miss"){
+      ## here, white = 1 = gut - so set this up:
+      fsc_pops[which(fsc_pops[,2]==1),2]<-"east"
+      fsc_pops[which(fsc_pops[,2]==2),2]<-"west"
+    }
     
     if(species=="Dpunctatus_p123_v3_25missEAST"){
       ## set up the populatoins based on how it was colored:

@@ -10,7 +10,7 @@ library(reshape2)
 library(ggplot2)
 
 ## Set up an object to contain the path to the main directory with the data and then set that as the working directory
-main_dir<-"/Users/harrington/Active_Research/Ecotone_genomics/GBS_Data/pop_assignment"
+main_dir<-"/Users/harrington/Active_Research/Ecotone_genomics/GBS_Data/Coexp_dryad"
 setwd(main_dir)
 coords<-read.csv("all_coords_requested.csv", header=TRUE, row.names=NULL) # coordinates of everything I sequenced and many I didn't
 
@@ -43,7 +43,7 @@ assemblies_gdm<-c(
   "Dpunctatus_p123_v3_25missEAST",
   "Lgetula_p123_v4_25miss",
   "Pguttatus_p123_v2_25miss",
-  "Sdekayi_p123_v2_25miss",
+  "Sdekayi_p123_v4_25miss",
   "erytro",
   "abacura_only",
   "Mflagellum_p123_v3_25missEast",

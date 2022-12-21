@@ -16,14 +16,12 @@ library(LEA)
 library(vcfR)
 library(plotrix)
 library(mapdata)
-# library(tess3r)
 library(rworldmap)
-# library(PipeMaster)
 
 
-main_dir<-"/Users/harrington/Active_Research/Ecotone_genomics/GBS_Data/pop_assignment"
-stairway2popsdir<-"~/Active_Research/Ecotone_genomics/GBS_Data/stairwayplot2/pop_files"
-vcf_filtered_dir<-"~/Active_Research/Ecotone_genomics/GBS_Data/stairwayplot2/filtered_vcf"
+main_dir<-"/Users/harrington/Active_Research/Ecotone_genomics/GBS_Data/Coexp_dryad"
+stairway2popsdir<-"/Users/harrington/Active_Research/Ecotone_genomics/GBS_Data/Coexp_dryad/stairwayplot2/pop_files"
+vcf_filtered_dir<-"/Users/harrington/Active_Research/Ecotone_genomics/GBS_Data/Coexp_dryad/stairwayplot2/filtered_vcf"
 
 setwd(main_dir)
 
@@ -33,7 +31,7 @@ setwd(main_dir)
 species<-"milks_denovo-92"
 
 # read in the file of coords and pop membership
-popass<-read.table("~/Active_Research/Ecotone_genomics/GBS_Data/stairwayplot2/Data_D6_DAPC_TESS_assignments_4_taxa.txt", header=TRUE)
+popass<-read.table(paste0(main_dir, "/Data_D6_DAPC_TESS_assignments_4_taxa.txt"), header=TRUE)
 popass_red<-popass[which(popass$dapc2.assign %in% c(2, 3, 4)),] # reduce down to only individuals assigned to gentilis (3), triangulum (2), or elapsoides (4)
 
 
