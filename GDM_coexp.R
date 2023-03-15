@@ -222,7 +222,7 @@ names(var_imp) <- gsub("Lgetula_p123_v4_25miss", "L. getula", names(var_imp))
 names(var_imp) <- gsub("Mflagellum_p123_v3_25missEast", "M. flagellum", names(var_imp))
 names(var_imp) <- gsub("Milks_filtered_snps_taxa", "L. triangulum", names(var_imp))
 names(var_imp) <- gsub("Pguttatus_p123_v2_25miss", "P. guttatus", names(var_imp))
-names(var_imp) <- gsub("Sdekayi_p123_v2_25miss", "S. dekayi", names(var_imp))
+names(var_imp) <- gsub("Sdekayi_p123_v4_25miss", "S. dekayi", names(var_imp))
 
 
 
@@ -236,7 +236,7 @@ names(sig_vars) <- gsub("Lgetula_p123_v4_25miss", "L. getula", names(sig_vars))
 names(sig_vars) <- gsub("Mflagellum_p123_v3_25missEast", "M. flagellum", names(sig_vars))
 names(sig_vars) <- gsub("Milks_filtered_snps_taxa", "L. triangulum", names(sig_vars))
 names(sig_vars) <- gsub("Pguttatus_p123_v2_25miss", "P. guttatus", names(sig_vars))
-names(sig_vars) <- gsub("Sdekayi_p123_v2_25miss", "S. dekayi", names(sig_vars))
+names(sig_vars) <- gsub("Sdekayi_p123_v4_25miss", "S. dekayi", names(sig_vars))
 
 
 
@@ -270,8 +270,7 @@ var_imp_df$variable <- gsub("aridityIndexThorn", "Thorn's aridity", var_imp_df$v
 var_imp_df$variable <- gsub("MDiurnRange_B2", "M diurn. range B2", var_imp_df$variable)
 var_imp_df$variable <- gsub("TSeas_B4", "T. seas B4", var_imp_df$variable)
 var_imp_df$variable <- gsub("MaxTWarmMon_B5", "Max T warmest mon. B5", var_imp_df$variable)
-var_imp_df$variable <- gsub("AnnMeanT_B1", "Ann. mean T.
-                            B1", var_imp_df$variable)
+var_imp_df$variable <- gsub("AnnMeanT_B1", "Ann. mean T. B1", var_imp_df$variable)
 var_imp_df$variable <- gsub("PETseasonality", "PET seasonality", var_imp_df$variable)
 var_imp_df$variable <- gsub("alt", "Altitude", var_imp_df$variable)
 

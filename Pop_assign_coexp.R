@@ -118,8 +118,8 @@ for(species in all_assemblies){   ### if we want to loop over all assemblies, th
   path_stru<-gsub(".ustr", ".stru", path_ustr)  # Use a regular expression substitution to generate the new file name
   file.copy(path_ustr, path_stru) # make a copy of the file with the new name
   # Now we can read in this file
-  DAPC_ustr<-read.structure(path_stru, n.ind=num_ind, n.loc=nums_snps, onerowperind = FALSE, col.lab=1, col.pop=0, NA.char="-9", pop=NULL, ask=FALSE, quiet=FALSE)
-  ind_names<-rownames(DAPC_ustr@tab) ## get the individual names in the order that they show up in the various files - this is important farther down for getting coordinates into the right order for plotting
+  ustr<-read.structure(path_stru, n.ind=num_ind, n.loc=nums_snps, onerowperind = FALSE, col.lab=1, col.pop=0, NA.char="-9", pop=NULL, ask=FALSE, quiet=FALSE)
+  ind_names<-rownames(ustr@tab) ## get the individual names in the order that they show up in the various files - this is important farther down for getting coordinates into the right order for plotting
   
   
   
@@ -159,7 +159,7 @@ for(species in all_assemblies){   ### if we want to loop over all assemblies, th
       scale_fill_manual(values = colors) +
       guides(fill="none") + # get rid of the legend for admixture
       theme_minimal() +
-      labs(title=paste0(species,"_SNMF_DAPC_K",i), x ="Longitude", y = "Latitude") +
+      labs(title=paste0(species,"_SNMF_K",i), x ="Longitude", y = "Latitude") +
       coord_map("moll") # Mollweide projection
     print(snmf_plot)
     
