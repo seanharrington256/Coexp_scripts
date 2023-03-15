@@ -34,7 +34,7 @@ all_cur_bioclim<-cbind(all_cur_bioclim_only, all_cur_envirem) ## note that despi
 
 
 
-### Set this up so that major code blocks only need to be written once, with subsitutions based on specific assemblies
+### Make a vector of assemblies and then loop over them
 ######################################################################################################################
 ######################################################################################################################
 
@@ -55,7 +55,7 @@ assemblies_gdm<-c(
 ######################################################################################################################
 
 
-for(species in assemblies_gdm){   ### if we want to loop over all species, this line and line starting "all_assemblies<-c" should be uncommented, as well as final "}"
+for(species in assemblies_gdm){   ### Loop over all assemblies
   ###########################################################
   ## Set up paths to input file for each assembly
   ###########################################################
@@ -185,7 +185,7 @@ names(var_sig) <- tax_names
 
 
 # if the full model isn't significant, I don't think there's any case where an individual variable should be called significant, but let's make sure
-#     the opposite seems the be the case, it's possible for the full model to be significant even if no ineividual variable is
+#     the opposite seems the be the case, it's possible for the full model to be significant even if no individual variable is
 var_sig <- var_sig[names(var_sig) %in% spec_sig_model]
 
 

@@ -1,5 +1,5 @@
 #### Script to look at isolation by distance for GBS data using kernel density plots
-####    this will also extract ecological data for use in GDM in another script - I don't know why I didn't put that part into the gdm script, but I didn't... would be good to do that in the future
+####    this will also extract ecological data for use in GDM in another script - I don't know why I didn't put that part into the gdm script, but I didn't. That would be good to do that in the future or if re-writing these scripts. I am unwilling to potentially accidentally screw something up at this point by making the change.
 
 ### load up relevant packages
 library(adegenet)
@@ -71,19 +71,17 @@ for(species in assemblies_ibd){   ### if we want to loop over all species, this 
   }
   
   
-  
-
   ### For  down below, get the geographic coordinates sorted out
   ## make sure there aren't any individuals that don't have coordinates
   ind_names[which(!ind_names %in% coords[,"number"])]
   # match up the coordinates to the order of the individuals from snmf
-  match_coords<-match(ind_names, coords[,"number"])
-  sorted_coords<-coords[match_coords,]
+  match_coords <- match(ind_names, coords[,"number"])
+  sorted_coords <- coords[match_coords,]
   
   
   ## Get genetic and geogrpahic distances, get kernel density, and make a color palette
-  Dgen<-dist(gendata) # get the genetic distances
-  Dgeo<-earth.dist(sorted_coords[,c("lon", "lat")]) # get the geographic distances
+  Dgen <- dist(gendata) # get the genetic distances
+  Dgeo <- earth.dist(sorted_coords[,c("lon", "lat")]) # get the geographic distances
   dens <- kde2d(as.numeric(Dgeo),as.numeric(Dgen), n=300)  # had to add as.numeric around the distances to make them numeric vectors--this wasn't necessary previously
   myPal <- colorRampPalette(c("white","blue","gold", "orange", "red"))
   
