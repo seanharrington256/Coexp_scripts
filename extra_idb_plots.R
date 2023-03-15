@@ -16,9 +16,6 @@ library(rSDM)
 main_dir <- "/Users/harrington/Active_Research/Ecotone_genomics/GBS_Data/Coexp_dryad/stairwayplot2/filtered_vcf"
 
 
-
-
-
 all_assemblies <- c(
   "Dpunctatus_p123_v3_25missEAST_popsouth",
   "Dpunctatus_p123_v3_25missEAST_popnorth",
@@ -50,9 +47,7 @@ for(species in all_assemblies){
   ind_names<-gendata@ind.names ## get the individual names in the order that they show up in the various files - this is important farther down for getting coordinates into the right order for plotting
   # }
   
-  
-  
-  
+
   ### For  down below, get the geographic coordinates sorted out
   ## make sure there aren't any individuals that don't have coordinates
   ind_names[which(!ind_names %in% coords[,"number"])]
@@ -77,7 +72,6 @@ for(species in all_assemblies){
   abline(lm(as.numeric(Dgen)~as.numeric(Dgeo)))
   title(paste0(species, "\nIBD plot"))
   dev.off()
-  
 }
 
 

@@ -12,7 +12,7 @@
 
 
 
-### load up relevant packages - copied over from _Pop_assignment.R - not all necessary
+### load up relevant packages - copied over from Pop_assignment.R - not all necessary
 library(adegenet)
 library(LEA)
 library(vcfR)
