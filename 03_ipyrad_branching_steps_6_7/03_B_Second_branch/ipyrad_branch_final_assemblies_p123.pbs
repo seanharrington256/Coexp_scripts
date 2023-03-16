@@ -1,0 +1,22 @@
+#!/bin/bash
+#PBS -V
+#PBS -N branch_species
+#PBS -m abe
+#PBS -M seanharrington256@gmail.com
+#PBS -l select=1:ncpus=32:mem=32gb
+#PBS -l walltime=100:00:00
+
+source ~/.bashrc
+
+# set the working directory
+cd /nas5/sharrington/GBS_data
+
+## Do some branching
+
+conda activate ipyrad_env
+ipyrad -p params-Pguttatus_p123.txt -b Pguttatus_p123_v2_25miss names_Pguttatus_plates_123_v2.txt
+ipyrad -p params-Acontortrix_p123.txt -b Acontortrix_p123_v2_25miss names_Acontortrix_plates_123_v2.txt
+ipyrad -p params-Dpunctatus_p123.txt -b Dpunctatus_p123_v3_25missEAST names_Dpunctatus_plates_123_v3.txt
+ipyrad -p params-Lgetula_p123.txt -b Lgetula_p123_v4_25miss names_Lgetula_plates_123_v4.txt
+ipyrad -p params-Sdekayi_p123.txt -b Sdekayi_p123_v4_25miss names_Sdekayi_plates_123_v4.txt
+ipyrad -p params-Mflagellum_p123.txt -b Mflagellum_p123_v3_25missEast names_Mflagellum_plates_123_v3.txt

@@ -1,0 +1,21 @@
+#!/bin/bash
+#PBS -V
+#PBS -N branch_species
+#PBS -m abe
+#PBS -M seanharrington256@gmail.com
+#PBS -l select=1:ncpus=32:mem=32gb
+#PBS -l walltime=100:00:00
+
+source ~/.bashrc
+
+# set the working directory
+cd /nas5/sharrington/GBS_data
+
+## use ipyrad to create datasets of individual species
+conda activate ipyrad_env
+ipyrad -p params-plates123_merged.txt -b Acontortrix_p123 names_Acontortrix_plates_123.txt
+ipyrad -p params-plates123_merged.txt -b Dpunctatus_p123 names_Dpunctatus_plates_123.txt
+ipyrad -p params-plates123_merged.txt -b Lgetula_p123 names_Lgetula_plates_123.txt
+ipyrad -p params-plates123_merged.txt -b Mflagellum_p123 names_Mflagellum_plates_123.txt
+ipyrad -p params-plates123_merged.txt -b Pguttatus_p123 names_Pguttatus_plates_123.txt -f
+ipyrad -p params-plates123_merged.txt -b Sdekayi_p123 names_Sdekayi_plates_123.txt -f

@@ -9,7 +9,7 @@
 ![](yarn_plot.png)
 
 
-**Will need to update image with newer yarn plot!!**
+**Will need to update image with newer yarn plot!!** or to a PTA fig or whatever
 
 
 This repo contains code used for analyses in the manuscript "Pleistocene glaciation drives shared coexpansion in snakes of eastern North America".
@@ -27,7 +27,20 @@ Demultiplexing scripts and files are in the `01_ipyrad_step_1_Demux` directory. 
 
 Scripts for the next processing steps are in the `02_ipyrad_steps_2_to_5` directory.
 
-Following these steps, `03_ipyrad_branching_steps_6_7` contains scripts to create new ipyrad branches containing only individuals from each species/complex.
+Following these steps, `03_ipyrad_branching_steps_6_7` contains scripts to create new ipyrad branches containing only individuals from each species/complex. There are a lot of files here, so these are further organized into directories (if you want to actually run them, I don't think they can be organized this way and all need to be in a single, messy directory). Directories are:
+
+- `03_A_First_branch`:  the first branching script (`ipyrad_branch_species_p123.pbs`) creates separate ipyrad branches for each species with all samples using the respective names files. These initial datasets include low quality samples and samples not included in our analysis of eastern populations for some species/complexes. `pbs` files starting `ipyrad_p123` then run ipyrad steps 6 and 7 on each of these branches, using the species-specific params files made in the branching process.
+
+- `03_A_Second_branch`: This creates new branches for each species/species complex to remove individuals with large amounts of missing data or that are outside of our focal region. The general gist is the same as above. `ipyrad_branch_final_assemblies_p123.pbs` creates new branches using new names files and the params files from `03_A_First_branch`. 
+
+
+
+
+** NEED TO  go add in the names files for each of these, then the params files that come from branching, then the pbs for step 7 for each. 
+
+
+
+
 
 
 1) the full set of L. getula samples, including low quality samples, 2) the set of L. getula samples used in most of analyses after dropping low quality samples, 3) eastern samples only, and 4) western samples only. These branching scripts use the names files to create the the params files, which are then used to run steps 6 and 7 of ipyrad and create the final datasets for each of these sets of individuals. `ipyrad_p123_Lgetula_67_v1.pbs` runs steps 6 & 7 on all samples, then remaining `.pbs` scripts run step 7 on the 3 datasets used in the manuscript.
