@@ -1,0 +1,16 @@
+#!/bin/bash
+#PBS -V
+#PBS -N ipyrad_2345
+#PBS -m abe
+#PBS -M seanharrington256@gmail.com
+#PBS -l select=1:ncpus=32:mem=32gb
+#PBS -l walltime=72:00:00
+
+source ~/.bashrc
+
+# set the working directory
+cd /nas5/sharrington/GBS_data
+
+## run ipyrad step 1 for plate 1
+conda activate ipyrad_env
+ipyrad -p params-plates123_merged.txt -s 2345 -c 32 1>p123_steps2345_out.txt 2>p123_steps2345_err.txt
