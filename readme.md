@@ -6,7 +6,7 @@
 <br>
 
 
-![](yarn_plot.pdf)
+![](yarn_plot.png)
 
 
 **Will need to update image with newer yarn plot!!**
