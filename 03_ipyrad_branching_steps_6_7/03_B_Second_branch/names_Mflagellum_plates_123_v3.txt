@@ -1,0 +1,9 @@
+AMCC266279	Mflagellum
+AMCC266288	Mflagellum
+AMCC266297	Mflagellum
+AMCC266300	Mflagellum
+AMCC266302	Mflagellum
+AMCC266306	Mflagellum
+AMCC266312	Mflagellum
+AMCC266317	Mflagellum
+AMCC266322	Mflagellum

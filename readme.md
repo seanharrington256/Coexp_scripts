@@ -31,14 +31,7 @@ Following these steps, `03_ipyrad_branching_steps_6_7` contains scripts to creat
 
 - `03_A_First_branch`:  the first branching script (`ipyrad_branch_species_p123.pbs`) creates separate ipyrad branches for each species with all samples using the respective names files. These initial datasets include low quality samples and samples not included in our analysis of eastern populations for some species/complexes. `pbs` files starting `ipyrad_p123` then run ipyrad steps 6 and 7 on each of these branches, using the species-specific params files made in the branching process.
 
-- `03_A_Second_branch`: This creates new branches for each species/species complex to remove individuals with large amounts of missing data or that are outside of our focal region. The general gist is the same as above. `ipyrad_branch_final_assemblies_p123.pbs` creates new branches using new names files and the params files from `03_A_First_branch`. 
-
-
-
-
-** NEED TO  go add in the names files for each of these, then the params files that come from branching, then the pbs for step 7 for each. 
-
-
+- `03_A_Second_branch`: This creates new branches for each species/species complex to remove individuals with large amounts of missing data or that are outside of our focal region. The general gist is the same as above. `ipyrad_branch_final_assemblies_p123.pbs` creates new branches using new names files and the params files from `03_A_First_branch`. Each new branch then has new `params` files included in this directory and `.pbs` scripts that run ipyrad step 7 to generate each assembly as used in the analyses.
 
 
 
