@@ -2,12 +2,7 @@
 ###     looking at coexpanding eastern snakes
 
 
-# Prior to running this, I had to fix some names in the milk snake files
-# ran these on command line in dir with the milk snake files:
-# sed -i '.bak' 's/L_elapsoides_FTB2078/L_gentilis_FTB2078/g' *
-# sed -i '.bak' 's/L_gentilis_FTB2109/L_elapsoides_FTB2109/g' *
-# sed -i '.bak' 's/L_triangulum_FTB1538/L_triangulum_FTB1583/g' *
-# had to also change YPM13949 in the coords to YP13949 to match the genetic data files
+# had to change YPM13949 in the coords to YP13949 to match the genetic data files
 #    and YPM13969 to YP13969 for same reason
 
 ### load up relevant packages
