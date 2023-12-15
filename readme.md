@@ -56,6 +56,7 @@ Following these steps, `03_ipyrad_branching_steps_6_7` contains scripts to creat
 
 Directory `04_R_analyses` contains R scripts used to perform analyses. These scripts are extensively commented.
 
+- `get_all_ind_IDs.R` just gets the IDs of all the individuals included
 - `Pop_assign_coexp.R` runs sNMF and DAPC on assemblies from ipyrad
 - `IBD_coexp.R` generates kernel density plots of isolation by distance and prepares bioclim and envirem data for GDM analysis
 - `extra_idb_plots.R` generates some additional IBD plots for split up populations of *D. punctatus* and *A. contortrix* that we used when deciding whether or not to  split these populations for Stairwayplot2 and PTA analyses
@@ -75,6 +76,8 @@ These population assignment files, vcf files, and ipyrad stats files were then u
 
 Mutation rate mentioned in the notebook references [this paper](https://onlinelibrary.wiley.com/doi/full/10.1111/jbi.13114).
 
+
+R script `make_yarn_plot.R` plots the output from StairwayPlot2 in with lines for population size of each lineage (wich we've been calling a yarn plot).
 
 
 
