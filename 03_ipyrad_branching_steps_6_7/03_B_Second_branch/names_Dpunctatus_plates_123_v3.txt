@@ -23,7 +23,7 @@ AMCC264813	D punctatus
 AMCC264816	D punctatus
 AMCC264817	D punctatus
 AMCC264805	D punctatus
-AMCC265810	D punctatus
+AMCC264810	D punctatus
 AMCC264811	D punctatus
 AMCC264803	D punctatus
 AMCC264780	D punctatus
