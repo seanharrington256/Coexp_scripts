@@ -50,13 +50,15 @@ Following these steps, `03_ipyrad_branching_steps_6_7` contains scripts to creat
 
 
 
+
+
 <br>
 
 ## Population clustering, IBD, and GDM in R
 
 Directory `04_R_analyses` contains R scripts used to perform analyses. These scripts are extensively commented.
 
-- `get_all_ind_IDs.R` just gets the IDs of all the individuals included
+- `get_all_ind_IDs.R` just gets the IDs of all the individuals included and generates some info for the appendix
 - `Pop_assign_coexp.R` runs sNMF and DAPC on assemblies from ipyrad
 - `IBD_coexp.R` generates kernel density plots of isolation by distance and prepares bioclim and envirem data for GDM analysis
 - `extra_idb_plots.R` generates some additional IBD plots for split up populations of *D. punctatus* and *A. contortrix* that we used when deciding whether or not to  split these populations for Stairwayplot2 and PTA analyses
