@@ -95,3 +95,6 @@ appendix_info <- merge(inds_reads, popinfo_df, all.x = TRUE)
 # Do a little renaming:
 appendix_info$Species_or_complex <- gsub("abacura", "Fabacura", appendix_info$Species_or_complex)
 appendix_info$Species_or_complex <- gsub("erytro", "Ferytrogramma", appendix_info$Species_or_complex)
+
+# write it out
+write.table(appendix_info, file = "~/Active_Research/Ecotone_genomics/GBS_Data/Coexp_dryad/Appendix_1.txt", row.names = FALSE, quote = FALSE)
