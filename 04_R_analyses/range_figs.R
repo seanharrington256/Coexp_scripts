@@ -87,8 +87,6 @@ basemap <- ggplot() +
   theme_minimal()
 
 
-species <- "Milks_filtered_snps_taxa"
-
 for(species in all_assemblies){    
     ### If only one shape file, read it in, or combine multiple shape files if necessaruy:
     shapes_path <- paste0(poly_dir, species)
@@ -251,15 +249,11 @@ for(species in all_assemblies){
 all_to_plot <- ls(pattern = "figplot")
 all_plots <- mget(all_to_plot)
 
-
-
 # arrange them in columns & rows
 grid_plot <- ggarrange(plotlist = all_plots, ncol = 3, nrow = 3)
 
 
-
-
-# plot it out to pdf
+# plot it out to pdf & add in lat & long labels
 pdf(file = paste0(plots_dir, "/ranges_pops.pdf"), width = 10, height = 10)
 annotate_figure(grid_plot,
                 bottom = text_grob("Longitude", face = "bold"),
