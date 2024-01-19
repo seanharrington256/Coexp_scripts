@@ -114,39 +114,48 @@ for(species in all_assemblies){
     #  set up value of k and size for plotting pies later:
     if(species == "Lgetula_p123_v4_25miss"){
       k <- 3
-      pie_size <- 1.5
+      pie_size <- 2.2
+      sci_name <- "L. getula complex"
     }
     if(species == "Dpunctatus_p123_v3_25missEAST"){
       k <- 3
-      pie_size <- 2.2
+      pie_size <- 3.5
+      sci_name <- "D. punctatus"
     }
     if(species == "Acontortrix_p123_v2_25miss"){
       k <- 2
-      pie_size <- 1.5
+      pie_size <- 2.75
+      sci_name <- "A contortrix"
     }
     if(species == "Pguttatus_p123_v2_25miss"){
       k <- 2
-      pie_size <- 1
+      pie_size <- 1.5
+      sci_name <- "P. guttatus complex"
     }
     if(species == "Sdekayi_p123_v4_25miss"){
       k <- 1
-      pie_size <- 3.5
+      pie_size <- 3
+      sci_name <- "S. dekayi"
     }
     if(species == "erytro"){
       k <- 1
-      pie_size <- 3.5
+      pie_size <- 3
+      sci_name <- "F. erytrogramma"
     }
     if(species == "abacura_only"){
       k <- 2
-      pie_size <- 1.5
+      pie_size <- 2.25
+      sci_name <- "F. abacura"
     }
     if(species == "Mflagellum_p123_v3_25missEast"){
       k <- 1
-      pie_size <- 4
+      pie_size <- 3
+      sci_name <- "M. flagellum"
     }
     if(species == "Milks_filtered_snps_taxa"){
       k <- 3
-      pie_size <- 0.8
+      pie_size <- 1.2
+      sci_name <- "L. triangulum complex"
     }
     
     ## Read in vcf file to get individual names
@@ -215,17 +224,25 @@ for(species in all_assemblies){
     if(k > 1){ # plot pie charts if K > 1
     range_snmfplot <- basemap +
       geom_sf(data = cropped_poly, fill = "gray50", color = NA, alpha = 0.85) + 
-      geom_scatterpie(data = for_pies_transformed_df, aes(x=lon, y=lat), cols = grep("^V", colnames(for_pies_transformed_df), value = TRUE), size = 0.1, pie_scale = pie_size) + # plot the pies - use grep to get the column names that start with V, these are the admix proportions
+      geom_scatterpie(data = for_pies_transformed_df, aes(x=lon, y=lat), cols = grep("^V", colnames(for_pies_transformed_df), value = TRUE), size = 0.01, pie_scale = pie_size) + # plot the pies - use grep to get the column names that start with V, these are the admix proportions
       scale_fill_manual(values = colors) +
       guides(fill="none") + # get rid of the legend for admixture
-      coord_sf(crs = target_crs)
+      coord_sf(crs = target_crs) + # set target projection
+      ggtitle(sci_name) + # set title to the species
+      theme(plot.title = element_text(face="bold.italic", hjust = 0.5), # format the title
+            axis.title.x = element_blank(),  # Remove x-axis label
+            axis.title.y = element_blank())  # Remove y-axis label
     }else{ # at K 1, just plot points, not pies
       range_snmfplot <- basemap +
         geom_sf(data = cropped_poly, fill = "gray50", color = NA, alpha = 0.85) + 
         geom_point(data = for_pies_transformed_df, aes(x=lon, y=lat), shape = 21, fill = "red", size = pie_size) + # plot points if K = 1
         scale_fill_manual(values = colors) +
         guides(fill="none") + # get rid of the legend for admixture
-        coord_sf(crs = target_crs)
+        coord_sf(crs = target_crs) + # set target projection
+        ggtitle(sci_name) + # set title to the species
+        theme(plot.title = element_text(face="bold.italic", hjust = 0.5), # format the title
+              axis.title.x = element_blank(),  # Remove x-axis label
+              axis.title.y = element_blank())  # Remove y-axis label
     }
     assign(paste0("figplot_", species), range_snmfplot) # name the object with the species/complex name
 }
@@ -237,23 +254,16 @@ all_plots <- mget(all_to_plot)
 
 
 # arrange them in columns & rows
-ggarrange(plotlist = all_plots, ncol = 3, nrow = 3)
-
-
-# ggarrange(bxp, dp, bp + rremove("x.text"), 
-#           labels = c("A", "B", "C"),
-#           ncol = 2, nrow = 2)
+grid_plot <- ggarrange(plotlist = all_plots, ncol = 3, nrow = 3)
 
 
 
-figplot_Acontortrix_p123_v2_25miss
-figplot_Dpunctatus_p123_v3_25missEAST # pies are small for this one
-figplot_Lgetula_p123_v4_25miss
-figplot_Pguttatus_p123_v2_25miss
-figplot_Sdekayi_p123_v4_25miss
-figplot_erytro
-figplot_abacura_only
-figplot_Mflagellum_p123_v3_25missEast
-figplot_Milks_filtered_snps_taxa
+
+# plot it out to pdf
+pdf(file = paste0(plots_dir, "/ranges_pops.pdf"), width = 10, height = 10)
+annotate_figure(grid_plot,
+                bottom = text_grob("Longitude", face = "bold"),
+                left = text_grob("Latitude", rot = 90, face = "bold"))
+dev.off()
 
 
