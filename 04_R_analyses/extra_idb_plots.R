@@ -9,7 +9,7 @@ library(fossil)
 library(raster)
 library(vcfR)
 library(dartR)
-library(rSDM)
+# library(rSDM)
 
 
 
@@ -24,6 +24,17 @@ all_assemblies <- c(
   "Acontortrix_p123_v2_25miss_popwest"
 )
 
+# make an object with the name of the species/complex for each assembly:
+tax_names <- c(
+  "D. punctatus South",
+  "D. punctatus North",
+  "D. punctatus Central",
+  "A. contortrix East",
+  "A. contortrix West"
+)
+ass_taxa <- data.frame(assembly = all_assemblies, taxon = tax_names)
+
+
 coords<-read.csv("/Users/harrington/Active_Research/Ecotone_genomics/GBS_Data/Coexp_dryad/all_coords_requested.csv", header=TRUE, row.names=NULL) # coordinates of everything I sequenced and many I didn't
 
 ## make a directory to put the output plots into
@@ -34,7 +45,17 @@ if(!dir.exists(extra_ibd_out_dir)){ # check if the directory  exists and then on
 
 
 
+# make a pdf with each page as the IBD plot for each species in loop just below
+setwd(extra_ibd_out_dir)
+pdf(file="Fig_S3_IBD_population_plots.pdf", width=8, height=8)
+
+
+
 for(species in all_assemblies){
+  # set the actual taxon name for pasting into figure titles
+  taxon <- ass_taxa$taxon[ass_taxa$assembly == species]
+  
+  # read in file
   path_vcf<-paste0(main_dir,"/", species,".vcf")
   
   ## Read in genetic data 
@@ -63,16 +84,13 @@ for(species in all_assemblies){
   myPal <- colorRampPalette(c("white","blue","gold", "orange", "red"))
   
   
-  setwd(extra_ibd_out_dir)
   
   ## pdf of plot
-  pdf(file=paste0(species, "_IBD_KD.pdf"), width=8, height=8)
   plot(Dgeo, Dgen, pch=20,cex=.5)
   image(dens, col=transp(myPal(300),.7), add=TRUE)
-  abline(lm(as.numeric(Dgen)~as.numeric(Dgeo)))
-  title(paste0(species, "\nIBD plot"))
-  dev.off()
+  title(paste0("Fig. S2 IBD kernel density plot\n", taxon))
 }
+dev.off()
 
 
 

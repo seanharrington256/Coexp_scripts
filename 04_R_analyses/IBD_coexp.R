@@ -37,6 +37,21 @@ assemblies_ibd<-c(
   "Milks_filtered_snps_taxa"
 )
 
+# make an object with the name of the species/complex for each assembly:
+tax_names <- c(
+  "A. contortrix",
+  "D. punctatus",
+  "L. getula",
+  "P. guttatus",
+  "S. dekayi",
+  "F. erytrogramma",
+  "F. abacura",
+  "M. flagellum",
+  "L. triangulum"
+)
+ass_taxa <- data.frame(assembly = assemblies_ibd, taxon = tax_names)
+
+
 
 
 ## make a directory to put the output plots into
@@ -50,15 +65,21 @@ if(!dir.exists(ibd_out_dir)){ # check if the directory  exists and then only cre
 setwd(main_dir)
 coords<-read.csv("all_coords_requested.csv", header=TRUE, row.names=NULL) # coordinates of everything I sequenced and many I didn't
 
+# make a pdf with each page as the IBD plot for each species in loop just below
+setwd(ibd_out_dir)
+pdf(file="Fig_S2_IBD_plots.pdf", width=8, height=8)
 
 
+setwd(main_dir)
 for(species in assemblies_ibd){   ### if we want to loop over all species, this line and line starting "all_assemblies<-c" should be uncommented, as well as final "}"
+  
+  # set the actual taxon name for pasting into figure titles
+  taxon <- ass_taxa$taxon[ass_taxa$assembly == species]
+  
   ###########################################################
   ## Set up paths to input files
   ###########################################################
   path_vcf<-paste0(main_dir,"/", species,".vcf")
-
-  
 
   ## Read in genetic data 
   gendata_all<-read.vcfR(path_vcf) # read in all of the genetic data
@@ -69,7 +90,6 @@ for(species in assemblies_ibd){   ### if we want to loop over all species, this 
   }else{
     ind_names<-gendata@ind.names ## get the individual names in the order that they show up in the various files - this is important farther down for getting coordinates into the right order for plotting
   }
-  
   
   ### For  down below, get the geographic coordinates sorted out
   ## make sure there aren't any individuals that don't have coordinates
@@ -85,19 +105,13 @@ for(species in assemblies_ibd){   ### if we want to loop over all species, this 
   dens <- kde2d(as.numeric(Dgeo),as.numeric(Dgen), n=300)  # had to add as.numeric around the distances to make them numeric vectors--this wasn't necessary previously
   myPal <- colorRampPalette(c("white","blue","gold", "orange", "red"))
   
-  setwd(ibd_out_dir)
   
   ## pdf of plot
-  pdf(file=paste0(species, "_IBD_KD.pdf"), width=8, height=8)
   plot(Dgeo, Dgen, pch=20,cex=.5)
   image(dens, col=transp(myPal(300),.7), add=TRUE)
-  abline(lm(as.numeric(Dgen)~as.numeric(Dgeo)))
-  title(paste0(species, "\nIBD plot"))
-  dev.off()
-  
-  setwd(main_dir)
+  title(paste0("Fig. S2 IBD kernel density plot\n", taxon))
 }
-  
+dev.off()
 
 
 
