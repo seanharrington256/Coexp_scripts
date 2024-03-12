@@ -63,7 +63,6 @@ Directory `04_R_analyses` contains R scripts used to perform analyses. These scr
 - `IBD_coexp.R` generates kernel density plots of isolation by distance and prepares bioclim and envirem data for GDM analysis
 - `extra_idb_plots.R` generates some additional IBD plots for split up populations of *D. punctatus* and *A. contortrix* that we used when deciding whether or not to  split these populations for Stairwayplot2 and PTA analyses
 - `GDM_coexp.R` runs generalized dissimilarity modeling (GDM)
-- `make_yarn_plot.R` makes the "yarn plot" of all of the stairwayplot2 output on a single figure. It also makes the supplemental figure of each individual stairwayplot2 output with error shown.
 - `sNMF_supp_fig.R` makes the supplemental figure showing sNMF cross-entropy and sNMF K=2 for D. punctatus.
 - `range_figs.R` creates the figure with species/complex ranges with sNMF results plotted onto maps.
 
@@ -82,7 +81,7 @@ These population assignment files, vcf files, and ipyrad stats files were then u
 Mutation rate mentioned in the notebook references [this paper](https://onlinelibrary.wiley.com/doi/full/10.1111/jbi.13114).
 
 
-R script `make_yarn_plot.R` plots the output from StairwayPlot2 in with lines for population size of each lineage (wich we've been calling a yarn plot).
+R script `make_yarn_plot.R` plots the output from StairwayPlot2 in with lines for population size of each lineage (wich we've been calling a yarn plot). It also makes the supplemental figure of each individual stairwayplot2 output with error shown.
 
 
 
