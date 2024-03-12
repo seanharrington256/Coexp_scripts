@@ -61,7 +61,6 @@ ggplot(data = result_df, mapping = aes(x = kya, y = Ne_median, color = Lineage))
   theme(legend.text = element_text(face = "italic"))
 
 
-
 # plot logged Ne - x axis is thousand years ago and y axis is logged median Ne
 ggplot(data = result_df, mapping = aes(x = kya, y = logNe, color = Lineage)) +
   geom_line() +
@@ -75,15 +74,39 @@ ggplot(data = result_df, mapping = aes(x = kya, y = logNe, color = Lineage)) +
 yarn_log_trunc <- ggplot(data = result_df, mapping = aes(x = kya, y = logNe, color = Lineage)) +
   geom_line() +
   scale_color_manual(values = colX) +
-  labs(x = "Thosand years ago", y = "log(median Ne)") +
+  labs(x = "Thousand years ago", y = "log(median Ne)") +
   ylim(9.5, 16) +
   theme_classic() +
   theme(legend.text = element_text(face = "italic"))
 
 
-pdf(file = "yarn_log_trunc.pdf", width = 10, height = 10)
+pdf(file = "yarn_log_trunc.pdf", width = 10, height = 7)
 print(yarn_log_trunc)
 dev.off()
 
+### make columns for log of the upper and lower confidence limits
+result_df <- mutate(result_df, logNe975 = log(Ne_97.5.))
+result_df <- mutate(result_df, logNe25 = log(Ne_2.5.))
 
+
+
+### Make a plot for each species with the error around it
+# open the pdf
+pdf(file = "Fig_S4_all_stairway.pdf", width = 8, height = 6)
+for(i in names(results)){ # loop over the results object by name
+  # i <- "A. contortrix - east" #TESTING
+  # i <- "F. erytrogramma"  
+  loop_df <- filter(result_df, Lineage == i) # filter to a single lineage designated by i
+  
+  stair_w_error <- ggplot(data = loop_df) +
+    geom_line(mapping = aes(x = kya, y = logNe), color = "darkred") +
+    geom_ribbon(aes(x = kya, ymin = logNe25, ymax = logNe975), fill = "hotpink", alpha = 0.5) +
+    labs(x = "Thousand years ago", y = "log(Ne)") +
+    theme_classic() +
+    labs(title = "Fig. S4. staiwayplot2 output", subtitle = bquote(italic(.(i)))) +
+    theme(plot.title = element_text(hjust = 0.5, size = 15),
+          plot.subtitle = element_text(hjust = 0.5, size = 15))
+  print(stair_w_error)
+}
+dev.off()
 
