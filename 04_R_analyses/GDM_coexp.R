@@ -303,15 +303,20 @@ var_imp_sig_only_df$variable <- gsub("alt", "Altitude", var_imp_sig_only_df$vari
 map_all_vars <- ggplot(var_imp_df, aes(species, variable, fill= importance, na.rm = TRUE)) + 
   geom_tile(na.rm = TRUE) +
   scale_fill_gradient2(mid = "white",  high = "red", na.value = NA) + 
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1), 
-        axis.title.x = element_blank(), axis.title.y = element_blank())
+  labs(fill = "GDM variable\nimportance") + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust=1, margin = margin(b = 25, t = -19)), 
+        axis.title.x = element_blank(), axis.title.y = element_blank(),
+        legend.title = element_text(hjust = 0.5))
 
 # make heatmap with ggplot for significant only
 maps_sigVars <- ggplot(var_imp_sig_only_df, aes(species, variable, fill= importance, na.rm = TRUE)) + 
   geom_tile(na.rm = TRUE) +
-  scale_fill_gradient2(mid = "white",  high = "red", na.value = NA) + 
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1), 
-        axis.title.x = element_blank(), axis.title.y = element_blank())
+  scale_fill_gradient2(mid = "white",  high = "red", na.value = NA) +
+  labs(title = "Fig. S5. Heatmap of individually\nsignificant GDM variables", fill = "GDM variable\nimportance") + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust=1, margin = margin(b = 25, t = -19)), 
+        axis.title.x = element_blank(), axis.title.y = element_blank(),
+        plot.title = element_text(hjust = 0.5),
+        legend.title = element_text(hjust = 0.5))
 
 map_all_vars
 maps_sigVars
@@ -319,11 +324,11 @@ maps_sigVars
 
 setwd(gdm_out_dir)
 
-pdf(file="heatmap_all_gdm_vars.pdf", width = 6, height = 4)
+pdf(file="Fig_2_heatmap_all_gdm_vars.pdf", width = 6, height = 4)
 print(map_all_vars)
 dev.off()
 
-pdf(file="heatmap_sig_gdm_vars.pdf", width = 6, height = 4)
+pdf(file="Fig_S5_heatmap_sig_gdm_vars.pdf", width = 6, height = 4)
 print(maps_sigVars)
 dev.off()
 

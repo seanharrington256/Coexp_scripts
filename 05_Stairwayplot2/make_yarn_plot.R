@@ -80,7 +80,7 @@ yarn_log_trunc <- ggplot(data = result_df, mapping = aes(x = kya, y = logNe, col
   theme(legend.text = element_text(face = "italic"))
 
 
-pdf(file = "yarn_log_trunc.pdf", width = 10, height = 7)
+pdf(file = "Fig_3_yarn_log_trunc.pdf", width = 10, height = 7)
 print(yarn_log_trunc)
 dev.off()
 
