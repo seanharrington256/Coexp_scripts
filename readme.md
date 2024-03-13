@@ -9,18 +9,16 @@
 ![](yarn_plot.png)
 
 
-**Will need to update image with newer yarn plot!!** or to a PTA fig or whatever
+<br>
 
 
-This repo contains code used for analyses in the manuscript "Pleistocene glaciation drives shared coexpansion in snakes of eastern North America".
+This repo contains code used for analyses in the manuscript "Pleistocene glaciation drives shared coexpansion in eastern North American snakes".
 
 Raw sequence data WILL BE AVAILABLE WHEN I UPLOAD THEM TO NCBI!! - Will need to reference the kingsnake raw data already on NCBI.
 
 * All processed data files generated for this study (e.g, output from ipyrad, downloaded bioclim data, etc.) WILL BE available on Dryad at XXXXXXXX
 
 For the milk snakes (*Lampropeltis triangulum* complex), we used the published file `Data_D3_VCF_file_generated_for__Lampropeltis_triangulum_L._gentilis_and_L._elapsoides_from_ipyrad_filtered.vcf` from the [Dryad dataset](https://datadryad.org/stash/dataset/doi:10.5061/dryad.g79cnp5qm) associated with [Burbrink et al. 2022](https://academic.oup.com/sysbio/article/71/4/839/6433690). We renamed this file as `Milks_filtered_snps_taxa.vcf` and it is referred to as such in all scripts.
-
-## Are the `milks_denovo-92` files available anywhere???
 
 Some names in this file need to be fixed, which we did using the following commands:
 
@@ -29,6 +27,9 @@ sed -i '.bak' 's/L_elapsoides_FTB2078/L_gentilis_FTB2078/g' *
 sed -i '.bak' 's/L_gentilis_FTB2109/L_elapsoides_FTB2109/g' *
 sed -i '.bak' 's/L_triangulum_FTB1538/L_triangulum_FTB1583/g' *
 ```
+
+## Are the `milks_denovo-92` files available anywhere???
+
 
 We also used published data for common kingsnakes (*Lampropeltis getula* complex) from [Harrington and Burbrink 2023](https://onlinelibrary.wiley.com/doi/full/10.1111/jbi.14536). We used genetic data files starting `Lgetula_p123_v4_25miss` from [Dryad](https://datadryad.org/stash/dataset/doi:10.5061/dryad.18931zd16).
 
@@ -58,13 +59,13 @@ Following these steps, `03_ipyrad_branching_steps_6_7` contains scripts to creat
 
 Directory `04_R_analyses` contains R scripts used to perform analyses. These scripts are extensively commented.
 
-- `get_all_ind_IDs.R` just gets the IDs of all the individuals included and generates some info for the appendix
-- `Pop_assign_coexp.R` runs sNMF and DAPC on assemblies from ipyrad
-- `IBD_coexp.R` generates kernel density plots of isolation by distance and prepares bioclim and envirem data for GDM analysis
 - `extra_idb_plots.R` generates some additional IBD plots for split up populations of *D. punctatus* and *A. contortrix* that we used when deciding whether or not to  split these populations for Stairwayplot2 and PTA analyses
 - `GDM_coexp.R` runs generalized dissimilarity modeling (GDM)
-- `sNMF_supp_fig.R` makes the supplemental figure showing sNMF cross-entropy and sNMF K=2 for D. punctatus.
+- `get_all_ind_IDs.R` just gets the IDs of all the individuals included and generates some info for the appendix
+- `IBD_coexp.R` generates kernel density plots of isolation by distance and prepares bioclim and envirem data for GDM analysis
+- `Pop_assign_coexp.R` runs sNMF on assemblies from ipyrad
 - `range_figs.R` creates the figure with species/complex ranges with sNMF results plotted onto maps.
+- `sNMF_supp_fig.R` makes the supplemental figure showing sNMF cross-entropy and sNMF K=2 for D. punctatus.
 
 <br>
 
