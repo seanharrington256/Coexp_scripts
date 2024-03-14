@@ -28,7 +28,8 @@ all_assemblies<-c(
 )
 
 
-
+# read in coords
+coords<-read.csv("all_coords_requested.csv", header=TRUE, row.names=NULL) # coordinates of everything I sequenced and many I didn't
 
 
 #### Some overall setup for mapping and plotting
@@ -91,6 +92,15 @@ colnames(popinfo_df) <- c("Sample_ID", "Population", "Species_or_complex")
 
 # merge that with inds_reads
 appendix_info <- merge(inds_reads, popinfo_df, all.x = TRUE)
+
+## add in geographic coordinates
+# Prune down and rename columns
+coords <- coords[,c("number", "lon", "lat")]
+colnames(coords) <- c("Sample_ID", "Longitude", "Latitude")
+## make sure there aren't any individuals that don't have coordinates
+appendix_info$Sample_ID[which(!appendix_info$Sample_ID %in% coords$number)]
+# merge that:
+appendix_info <- merge(appendix_info, coords, all.x = TRUE)
 
 # Do a little renaming:
 appendix_info$Species_or_complex <- gsub("abacura", "Fabacura", appendix_info$Species_or_complex)
