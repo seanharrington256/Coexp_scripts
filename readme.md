@@ -84,7 +84,17 @@ Mutation rate mentioned in the notebook references [this paper](https://onlineli
 
 R script `make_yarn_plot.R` plots the output from StairwayPlot2 in with lines for population size of each lineage (wich we've been calling a yarn plot). It also makes the supplemental figure of each individual stairwayplot2 output with error shown.
 
+## Phylogeographic Temporal Analysis (`06_PTA_analysis`)
+This directory contains jupyter notebooks for reproducing the [PTA](https://github.com/isaacovercast/PTA) comparative phylogeographic co-demographic change analysis.
 
+**Calculate site-frequency spectra and construct the multiSFS using `EasternSnakes-CreateSFS.ipynb`**
+This notebook uses the same easySFS based workflow as above to construct the sfs for each population from the output vcf files. All populations within the PTA analysis must be projected down to the same number of samples (here that number is 8). The list of SFS are then converted into PTA **mSFS** format using `PTA.msfs.multiSFS()`, and this is written to a file using the `multiSFS.dump()` function, so that it can be read in to the analysis notebook.
+
+**Perform PTA simulations and machine learning analysis using `EasternSnakes--Simulations--RF-ML-CrossValidation.ipynb`**
+This notebook performs the PTA simulations that will be used to train the machine learning model to learn a mapping between PTA parameter values and patterns in the mSFS. `PTA.DemographicModel()` creates the PTA object, and then `set_param()` is called several times to fix values of *known* parameters which are dicated by the data
+(e.g. `npops`, `nsamps`, `length`, `muts_per_gen`, etc), and set prior ranges on unknown parameters that we would like to estimate (e.g. `N_e`, `tau`, `epsilon`, etc). Then `model.simulate()` runs the simulation engine in parallel.
+
+After simulations are complete we use `PTA.inference.Classifier` and `PTA.inference.Regressor` (thin wrappers around scikit-learn) to perform random forest cross-validation (validation experiments) for model selection on zeta_e ('effective zeta') and for parameter estimation on model parameters with prior ranges. After validation we interogate the ML models with the empirical mSFS to classify zeta_e and esimtate parameters for the real data.
 
 
 <br>
