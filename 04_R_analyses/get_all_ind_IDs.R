@@ -32,8 +32,6 @@ all_assemblies<-c(
 coords<-read.csv("all_coords_requested.csv", header=TRUE, row.names=NULL) # coordinates of everything I sequenced and many I didn't
 
 
-#### Some overall setup for mapping and plotting
-
 
 ######################################################################################################################
 ## Loop over the assemblies
@@ -60,6 +58,7 @@ for(i in seq_along(all_assemblies)){
 
 # write out the individuals
 all_inds <- unlist(ind_names)
+
 write.table(all_inds, file = "all_inds_coexp.txt", sep = "\t", row.names = FALSE, col.names = FALSE, quote = FALSE)
 
 
@@ -105,6 +104,36 @@ appendix_info <- merge(appendix_info, coords, all.x = TRUE)
 # Do a little renaming:
 appendix_info$Species_or_complex <- gsub("abacura", "Fabacura", appendix_info$Species_or_complex)
 appendix_info$Species_or_complex <- gsub("erytro", "Ferytrogramma", appendix_info$Species_or_complex)
+
+
+# Add in the num reads for Farancia that I got from Ed
+setwd(main_dir)
+fara_reads <- read.csv("Farancia_raw_reads_info.csv")
+
+# check an discrepancies - all good
+fara_reads$specimen[!fara_reads$specimen %in% appendix_info$Sample_ID]
+
+# add in the number of reads:
+for(i in 1:nrow(fara_reads)){
+  ID <- fara_reads$specimen[i] # get the ID of the sample from the datafram with number of reads
+  row_in_app <- which(appendix_info$Sample_ID == ID) # get the row in the appendix corresponding to that sample
+  appendix_info$Reads[row_in_app] <- fara_reads$reads_raw[i] # replace the num reads colum in that row in the appendix with the number of reads
+}
+
+# Get museum numbers for Farancia - everything else is field numbers
+farancia_musnums<- read.csv("Farancia_museum_nums.csv")
+
+farancia_musnums$Name_in_Seq_files[!farancia_musnums$Name_in_Seq_files %in% appendix_info$Sample_ID]
+
+# add in museum numbers:
+appendix_info$Farancia_mus_num <- NA
+for(i in 1:nrow(farancia_musnums)){
+  ID <- farancia_musnums$Name_in_Seq_files[i] # get the ID of the sample from the datafram with museum numbers
+  row_in_app <- which(appendix_info$Sample_ID == ID) # get the row in the appendix corresponding to that sample
+  appendix_info$Farancia_mus_num[row_in_app] <- farancia_musnums$Museum.Field.Series.Numbers[i] # replace the column in that row in the appendix with the museum number
+}
+
+
 
 # write it out
 write.table(appendix_info, file = "~/Active_Research/Ecotone_genomics/GBS_Data/Coexp_dryad/Appendix_1.txt", row.names = FALSE, quote = FALSE)

@@ -1,7 +1,7 @@
 ## Pleistocene glaciation drove shared population coexpansion in eastern North American snakes
 
 
-### Harrington, Overcast, Myers, and Burbrink
+#### Harrington, Overcast, Myers, and Burbrink
 
 <br>
 <br>
@@ -13,9 +13,9 @@
 <br>
 
 
-This repo contains code used for analyses in the manuscript "Pleistocene glaciation drives shared coexpansion in eastern North American snakes".
+This repo contains code used for analyses in the manuscript "Pleistocene glaciation drove shared population coexpansion in eastern North American snakes".
 
-Raw sequence data WILL BE AVAILABLE WHEN I UPLOAD THEM TO NCBI!! - Will need to reference the kingsnake raw data already on NCBI.
+Raw sequence data WILL BE AVAILABLE WHEN I UPLOAD THEM TO NCBI!! Previously published raw reads for kingsnakes (*Lampropeltis getula* complex) are available on NCBI Sequence Read Archive under BioProject ID PRJNA889851.
 
 * All processed data files generated for this study (e.g, output from ipyrad, downloaded bioclim data, etc.) WILL BE available on Dryad at XXXXXXXX
 
@@ -32,7 +32,7 @@ sed -i '.bak' 's/L_triangulum_FTB1538/L_triangulum_FTB1583/g' *
 We also used a file `milks_denovo-92.vcf` file, which is the output from ipyrad from that manuscript but without filtering the file to a single SNP per locus in R. This file is included on Dryad.
 
 
-We also used published data for common kingsnakes (*Lampropeltis getula* complex) from [Harrington and Burbrink 2023](https://onlinelibrary.wiley.com/doi/full/10.1111/jbi.14536). We used genetic data files starting `Lgetula_p123_v4_25miss` from [Dryad](https://datadryad.org/stash/dataset/doi:10.5061/dryad.18931zd16).
+We also used published data for common kingsnakes (*Lampropeltis getula* complex) from [Harrington and Burbrink 2023](https://onlinelibrary.wiley.com/doi/full/10.1111/jbi.14536). We used genetic data files starting `Lgetula_p123_v4_25miss` from [Dryad](https://datadryad.org/stash/dataset/doi:10.5061/dryad.18931zd16). These files are also included on the Dryad associated with this manuscript.
 
 
 
@@ -40,7 +40,7 @@ We also used published data for common kingsnakes (*Lampropeltis getula* complex
 
 ## ipyrad data processing
 
-Demultiplexing scripts and files are in the `01_ipyrad_step_1_Demux` directory. `.pbs` scripts were used to run demultiplexing and merging of plates on the American Museum of Natural History (AMNH) computing cluster and using the parameter and barcodes files. Note that paths and node architecture are specific to the AMNH cluster and my my account. Additionally, not all samples in these plates were used for this manuscript. Only params files are included for Farancia species. These are in directory `02_ipyrad_steps_2_to_5`.
+Demultiplexing scripts and files are in the `01_ipyrad_step_1_Demux` directory. `.pbs` scripts were used to run demultiplexing and merging of plates on the American Museum of Natural History (AMNH) computing cluster and using the parameter and barcodes files. Note that paths and node architecture are specific to the AMNH cluster and my account. Additionally, not all samples in these plates were used for this manuscript. Only params files are included for Farancia species. These are in directory `02_ipyrad_steps_2_to_5`.
 
 Scripts for the next processing steps are in the `02_ipyrad_steps_2_to_5` directory.
 
@@ -60,11 +60,12 @@ Following these steps, `03_ipyrad_branching_steps_6_7` contains scripts to creat
 
 Directory `04_R_analyses` contains R scripts used to perform analyses. These scripts are extensively commented.
 
-- `extra_idb_plots.R` generates some additional IBD plots for split up populations of *D. punctatus* and *A. contortrix* that we used when deciding whether or not to  split these populations for Stairwayplot2 and PTA analyses
-- `GDM_coexp.R` runs generalized dissimilarity modeling (GDM)
-- `get_all_ind_IDs.R` just gets the IDs of all the individuals included and generates some info for the appendix
-- `IBD_coexp.R` generates kernel density plots of isolation by distance and prepares bioclim and envirem data for GDM analysis
+
 - `Pop_assign_coexp.R` runs sNMF on assemblies from ipyrad
+- `IBD_coexp.R` generates kernel density plots of isolation by distance and prepares bioclim and envirem data for GDM analysis
+- `GDM_coexp.R` runs generalized dissimilarity modeling (GDM)
+- `extra_idb_plots.R` generates some additional IBD plots for split up populations of *D. punctatus* and *A. contortrix* that we used when deciding whether or not to  split these populations for Stairwayplot2 and PTA analyses
+- `get_all_ind_IDs.R` just gets the IDs of all the individuals included and generates some info for the appendix
 - `range_figs.R` creates the figure with species/complex ranges with sNMF results plotted onto maps.
 - `sNMF_supp_fig.R` makes the supplemental figure showing sNMF cross-entropy and sNMF K=2 for D. punctatus.
 

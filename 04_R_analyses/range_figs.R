@@ -123,7 +123,7 @@ for(species in all_assemblies){
     if(species == "Acontortrix_p123_v2_25miss"){
       k <- 2
       pie_size <- 2.75
-      sci_name <- "A contortrix"
+      sci_name <- "A. contortrix"
     }
     if(species == "Pguttatus_p123_v2_25miss"){
       k <- 2
