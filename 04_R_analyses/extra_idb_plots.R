@@ -88,7 +88,7 @@ for(species in all_assemblies){
   ## pdf of plot
   plot(Dgeo, Dgen, pch=20,cex=.5)
   image(dens, col=transp(myPal(300),.7), add=TRUE)
-  title(paste0("Fig. S2 IBD kernel density plot\n", taxon))
+  title(paste0("Fig. S3 IBD kernel density plot\n", taxon))
 }
 dev.off()
 
