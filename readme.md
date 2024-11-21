@@ -15,9 +15,9 @@
 
 This repo contains code used for analyses in the manuscript "Pleistocene glaciation drove shared population coexpansion in eastern North American snakes".
 
-Raw sequence data WILL BE AVAILABLE WHEN I UPLOAD THEM TO NCBI!! Previously published raw reads for kingsnakes (*Lampropeltis getula* complex) are available on NCBI Sequence Read Archive under BioProject ID PRJNA889851.
+Raw reads for new sequence data generated for this study area available on NCBI Sequence Read Archive under BioProject ID PRJNA1189052. Previously published raw reads for kingsnakes (*Lampropeltis getula* complex) are available on NCBI Sequence Read Archive under BioProject ID PRJNA889851.
 
-* All processed data files generated for this study (e.g, output from ipyrad, downloaded bioclim data, etc.) WILL BE available on Dryad at XXXXXXXX
+* All processed data files generated for this study (e.g, output from ipyrad, downloaded bioclim data, etc.) Are available on Dryad at [https://doi.org/10.5061/dryad.9cnp5hqv5](https://doi.org/10.5061/dryad.9cnp5hqv5).
 
 For the milk snakes (*Lampropeltis triangulum* complex), we used the published file `Data_D3_VCF_file_generated_for__Lampropeltis_triangulum_L._gentilis_and_L._elapsoides_from_ipyrad_filtered.vcf` from the [Dryad dataset](https://datadryad.org/stash/dataset/doi:10.5061/dryad.g79cnp5qm) associated with [Burbrink et al. 2022](https://academic.oup.com/sysbio/article/71/4/839/6433690). We renamed this file as `Milks_filtered_snps_taxa.vcf` and it is referred to as such in all scripts.
 
@@ -85,6 +85,9 @@ Mutation rate mentioned in the notebook references [this paper](https://onlineli
 
 
 R script `make_yarn_plot.R` plots the output from StairwayPlot2 in with lines for population size of each lineage (wich we've been calling a yarn plot). It also makes the supplemental figure of each individual stairwayplot2 output with error shown.
+
+<br>
+
 
 ## Phylogeographic Temporal Analysis (`06_PTA_analysis`)
 This directory contains jupyter notebooks for reproducing the [PTA](https://github.com/isaacovercast/PTA) comparative phylogeographic co-demographic change analysis.
